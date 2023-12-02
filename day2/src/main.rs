@@ -1,3 +1,4 @@
+use std::cmp;
 use std::collections::HashMap;
 use std::fs::read_to_string;
 
@@ -24,7 +25,7 @@ fn first_part() {
             let set_cubes = current_set.split(", ");
             for nb_and_color in set_cubes {
                 let (nb, color) = nb_and_color.split_once(' ').unwrap();
-                if (nb.parse::<u32>().unwrap() > nbs_and_colors[color]) {
+                if nb.parse::<u32>().unwrap() > nbs_and_colors[color] {
                     respect_limit = false;
                 }
             }
@@ -39,32 +40,29 @@ fn first_part() {
 fn second_part() {
     let mut sum_sets = 0;
     for line in read_to_string("input.txt").unwrap().lines() {
-        let mut rest = line.chars().skip_while(|&c| c != ':').skip(2).collect::<String>();
-        let mut mini = [ 0, 0, 0 ];
-
+        let mut curr_power = 1;
+        let mut rest: &str = &line.chars().skip_while(|&c| c != ':').skip(2).collect::<String>();
+        let mut mini = HashMap::from([
+            ("red", 0),
+            ("green", 0),
+            ("blue", 0)
+        ]);
 
         while rest.chars().count() > 1 {
-            let current_set = rest.chars().take_while(|&c| c != ';').collect::<String>();
-            let mut nbs_and_colors = [ 0, 0, 0 ];
-            rest = (&rest[0 + current_set.chars().count()..]).to_string().chars().skip(2).collect();
+            let current_set;
+            (current_set, rest) = rest.split_at(rest.find(';').unwrap_or(rest.chars().count()));
+            if !rest.is_empty() {
+                rest = &rest[2..];
+            }
             let set_cubes = current_set.split(", ");
             for nb_and_color in set_cubes {
-                let nb = nb_and_color.chars().take_while(|&c| c != ' ').collect::<String>().parse::<u32>().unwrap();
-                let color = nb_and_color.chars().skip_while(|&c| c != ' ').skip(1).collect::<String>();
-                match color.as_str() {
-                    "red"   => nbs_and_colors[0] += nb,
-                    "green" => nbs_and_colors[1] += nb,
-                    "blue"  => nbs_and_colors[2] += nb,
-                    _ => println!("Error!"),
-                }
-            }
-            for i in 0..3 {
-                if mini[i] < nbs_and_colors[i] || mini[i] == 0 {
-                    mini[i] = nbs_and_colors[i];
-                }
+                let (nb, color) = nb_and_color.split_once(' ').unwrap();
+                *mini.get_mut(color).unwrap() = cmp::max(*mini.get_mut(color).unwrap(),
+                    nb.parse::<u32>().unwrap());
             }
         }
-        sum_sets += mini[0] * mini[1] * mini[2];
+        mini.values().for_each(|v| curr_power *= v);
+        sum_sets += curr_power;
     }
     println!("Result: {}", sum_sets);
 }
