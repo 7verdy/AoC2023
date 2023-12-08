@@ -73,8 +73,8 @@ fn parse_schematic(s: Vec<String>) -> u32 {
     sum_valid_numbers
 }
 
-fn first_part() {
-    let file = File::open("example.txt").expect("Error in reading file");
+fn first_part(filename: String) {
+    let file = File::open(filename).expect("Error in reading file");
     let reader = io::BufReader::new(file);
     let lines: io::Result<Vec<String>> = reader.lines().collect();
 
@@ -174,8 +174,8 @@ fn parse_part_2(s: Vec<String>) -> u32 {
 }
 
 
-fn second_part() {
-    let file = File::open("input.txt").expect("Error in reading file");
+fn second_part(filename: String) {
+    let file = File::open(filename).expect("Error in reading file");
     let reader = io::BufReader::new(file);
     let lines: io::Result<Vec<String>> = reader.lines().collect();
 
@@ -188,6 +188,8 @@ fn second_part() {
     }
 }
 fn main() {
-    first_part();
-    second_part();
+    let cwd = format!("{}{}", std::env::current_dir().unwrap().display(), "/src/bin/");
+    let filename = format!("{}03_{}", cwd, "input.txt");
+    first_part(filename.clone());
+    second_part(filename.clone());
 }

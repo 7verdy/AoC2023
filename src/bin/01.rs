@@ -1,8 +1,8 @@
 use std::fs::read_to_string;
 
-fn first_part() {
+fn first_part(filename: String) {
     let mut sum_calibration_values = 0;
-    for line in read_to_string("input.txt").unwrap().lines() {
+    for line in read_to_string(filename).unwrap().lines() {
         let first_digit = line
             .chars()
             .by_ref()
@@ -51,9 +51,9 @@ fn get_spelled_out_digit_or_value(s: &str, start_index: usize) -> (i32, usize) {
     return (value, index);
 }
 
-fn second_part() {
+fn second_part(filename: String) {
     let mut sum_calibration_values = 0;
-    for line in read_to_string("input.txt").unwrap().lines() {
+    for line in read_to_string(filename).unwrap().lines() {
 
         let (first_digit, index) = get_spelled_out_digit_or_value(line, 0);
         let (mut last_digit, _) = get_spelled_out_digit_or_value(line, index + 1);
@@ -66,6 +66,8 @@ fn second_part() {
 }
 
 fn main() {
-    first_part();
-    second_part();
+    let cwd = format!("{}{}", std::env::current_dir().unwrap().display(), "/src/bin/");
+    let filename = format!("{}01_{}", cwd, "input.txt");
+    first_part(filename.clone());
+    second_part(filename.clone());
 }

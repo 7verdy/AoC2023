@@ -4,10 +4,12 @@ use std::fs::File;
 use std::io::copy;
 use std::io::prelude::*;
 
-pub fn dl_file_from_url(url_str: String) -> Result<()> {
-    if File::open("input.txt").is_ok() {
+pub fn dl_file_from_url(url_str: String, filename: String) -> Result<()> {
+    println!("{}", filename);
+    if File::open(filename.clone()).is_ok() {
         return Ok(());
     }
+    let mut file = File::create(filename.clone()).ok().unwrap();
     let jar = reqwest::cookie::Jar::default();
     let url = reqwest::Url::parse(&url_str)?;
 
@@ -20,8 +22,6 @@ pub fn dl_file_from_url(url_str: String) -> Result<()> {
         .cookie_provider(jar.into())
         .build()?;
     let mut response = client.get(url).send()?;
-    println!("{:?}", response);
-    let mut file = File::create("input.txt")?;
     copy(&mut response, &mut file)?;
     Ok(())
 }

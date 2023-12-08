@@ -1,4 +1,4 @@
-mod aoc_utils;
+use aoc_2023::*;
 
 use std::fs::read_to_string;
 
@@ -86,7 +86,6 @@ fn part_two(filename: String) -> u64 {
     // =========== END SETUP =============
     let mut hands_bids = parse_input(data);
     hands_bids.sort_by(|a, b| get_score_s2(a.0.clone()).cmp(&get_score_s2(b.0.clone())));
-    println!("{:?}", hands_bids);
     for (i, (_, bid)) in hands_bids.iter().enumerate() {
         total += bid * (i as u64 + 1);
     }
@@ -99,15 +98,16 @@ fn part_two(filename: String) -> u64 {
 
 
 fn main() {
-    let filename = "input.txt".to_string();
+    let cwd = format!("{}{}", std::env::current_dir().unwrap().display(), "/src/bin/");
     let day = 7; // TO MODIFY
+    let filename = format!("{}{:02}_{}", cwd, day, "input.txt");
     let year = 2023; // TO MODIFY
     let input_url = format!("https://adventofcode.com/{}/day/{}/input", year, day);
-    let _ = aoc_utils::dl_file_from_url(input_url);
+    let _ = dl_file_from_url(input_url, filename.clone());
 
     let p1_res = part_one(filename.clone());
     let p2_res = part_two(filename.clone());
 
-    let _ = aoc_utils::upload_solution(year, day, 1, p1_res.to_string());
-    let _ = aoc_utils::upload_solution(year, day, 2, p2_res.to_string());
+    let _ = upload_solution(year, day, 1, p1_res.to_string());
+    let _ = upload_solution(year, day, 2, p2_res.to_string());
 }

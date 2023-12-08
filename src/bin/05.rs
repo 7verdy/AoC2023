@@ -1,7 +1,7 @@
 use std::fs::read_to_string;
 
-fn first_part() {
-    let data = read_to_string("input.txt").unwrap();
+fn first_part(filename: String) {
+    let data = read_to_string(filename).unwrap();
     let seeds = data
         .lines()
         .nth(0)
@@ -98,8 +98,8 @@ fn process_map(mut seeds: Vec<(i64, i64)>, full_lines: Vec<String>, idx: u32) ->
     (result, current_idx)
 }
 
-fn second_part() {
-    let data = read_to_string("input.txt").unwrap();
+fn second_part(filename: String) {
+    let data = read_to_string(filename).unwrap();
     let mut seeds: Vec<(i64, i64)> = vec![];
     let mut idx = 3;
 
@@ -127,6 +127,8 @@ fn second_part() {
 }
 
 fn main() {
-    first_part();
-    second_part();
+    let cwd = format!("{}{}", std::env::current_dir().unwrap().display(), "/src/bin/");
+    let filename = format!("{}05_{}", cwd, "input.txt");
+    first_part(filename.clone());
+    second_part(filename.clone());
 }

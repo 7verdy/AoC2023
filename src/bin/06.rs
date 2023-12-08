@@ -1,7 +1,7 @@
 use std::fs::read_to_string;
 
-fn first_part() {
-    let data = read_to_string("input.txt").unwrap();
+fn first_part(filename: String) {
+    let data = read_to_string(filename).unwrap();
 
     let times = data
         .lines().nth(0).unwrap().split(": ").nth(1).unwrap()
@@ -27,8 +27,8 @@ fn first_part() {
     println!("The result is: {}", total_ways);
 }
 
-fn second_part() {
-    let data = read_to_string("input.txt").unwrap();
+fn second_part(filename: String) {
+    let data = read_to_string(filename).unwrap();
     let time = data
         .lines().nth(0).unwrap().split(": ").nth(1).unwrap()
         .split_whitespace().collect::<String>()
@@ -50,6 +50,8 @@ fn second_part() {
     println!("The result is: {}", total_ways);
 }
 fn main() {
-    first_part();
-    second_part();
+    let cwd = format!("{}{}", std::env::current_dir().unwrap().display(), "/src/bin/");
+    let filename = format!("{}06_{}", cwd, "input.txt");
+    first_part(filename.clone());
+    second_part(filename.clone());
 }

@@ -2,9 +2,9 @@ use std::cmp;
 use std::collections::HashMap;
 use std::fs::read_to_string;
 
-fn first_part() {
+fn first_part(filename: String) {
     let mut sum_possible_game_ids = 0;
-    for line in read_to_string("input.txt").unwrap().lines() {
+    for line in read_to_string(filename).unwrap().lines() {
         let (mut game_id, mut rest) = line.split_at(line.find(':').unwrap());
         rest = &rest[2..];
         game_id = game_id.split(' ').nth(1).unwrap();
@@ -34,12 +34,12 @@ fn first_part() {
             sum_possible_game_ids += game_id.parse::<u32>().unwrap();
         }
     }
-    println!("Result: {}", sum_possible_game_ids);
+    println!("The result of the first step is: {}", sum_possible_game_ids);
 }
 
-fn second_part() {
+fn second_part(filename: String) {
     let mut sum_sets = 0;
-    for line in read_to_string("input.txt").unwrap().lines() {
+    for line in read_to_string(filename).unwrap().lines() {
         let mut curr_power = 1;
         let mut rest: &str = &line.chars().skip_while(|&c| c != ':').skip(2).collect::<String>();
         let mut mini = HashMap::from([
@@ -64,10 +64,12 @@ fn second_part() {
         mini.values().for_each(|v| curr_power *= v);
         sum_sets += curr_power;
     }
-    println!("Result: {}", sum_sets);
+    println!("The result of the second step is: {}", sum_sets);
 }
 
 fn main() {
-    first_part();
-    second_part();
+    let cwd = format!("{}{}", std::env::current_dir().unwrap().display(), "/src/bin/");
+    let filename = format!("{}02_{}", cwd, "input.txt");
+    first_part(filename.clone());
+    second_part(filename.clone());
 }

@@ -1,8 +1,8 @@
 use std::fs::read_to_string;
 
-fn first_part() {
+fn first_part(filename: String) {
     let mut total_points = 0;
-    for line in read_to_string("example.txt").unwrap().lines() {
+    for line in read_to_string(filename).unwrap().lines() {
         let (winning_numbers, my_numbers) = line.split_at(line.find('|').unwrap());
         let trimmed_winning_numbers = winning_numbers.split(":").collect::<Vec<_>>()[1]
             .trim()
@@ -31,11 +31,11 @@ fn first_part() {
 }
 
 
-fn second_part() {
+fn second_part(filename: String) {
     let mut total_cards = 0;
     let mut extra_cards = vec![0; 1];
 
-    for (idx, line) in read_to_string("input.txt").unwrap().lines().enumerate() {
+    for (idx, line) in read_to_string(filename).unwrap().lines().enumerate() {
         let (winning_numbers, my_numbers) = line.split_at(line.find('|').unwrap());
         let trimmed_winning_numbers = winning_numbers.split(":").collect::<Vec<_>>()[1]
             .trim()
@@ -70,6 +70,8 @@ fn second_part() {
 }
 
 fn main() {
-    first_part();
-    second_part();
+    let cwd = format!("{}{}", std::env::current_dir().unwrap().display(), "/src/bin/");
+    let filename = format!("{}04_{}", cwd, "input.txt");
+    first_part(filename.clone());
+    second_part(filename.clone());
 }
