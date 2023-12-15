@@ -10,12 +10,10 @@ fn part_one(filename: String) -> u64 {
     let mut total = 0;
 
     // =========== END SETUP =============
-    data.split(",").for_each(|x| {
+    data.split(",").map(|x| x.chars().collect::<Vec<char>>()).for_each(|vec| {
         let mut local = 0;
-        x.chars().for_each(|y| {
-            local += y as u64;
-            local *= 17;
-            local %= 256;
+        vec.iter().for_each(|&c| {
+            local = ((local + c as u64) * 17) % 256;
         });
         total += local;
     });
@@ -82,8 +80,8 @@ fn main() {
     let _ = dl_file_from_url(input_url, filename.clone());
 
     let p1_res = part_one(filename.clone());
-    let p2_res = part_two(filename.clone());
+    // let p2_res = part_two(filename.clone());
 
-    let _ = upload_solution(year, day, 1, p1_res.to_string());
-    let _ = upload_solution(year, day, 2, p2_res.to_string());
+    // let _ = upload_solution(year, day, 1, p1_res.to_string());
+    // let _ = upload_solution(year, day, 2, p2_res.to_string());
 }
